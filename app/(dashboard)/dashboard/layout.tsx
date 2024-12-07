@@ -5,6 +5,8 @@ import Image from "next/image";
 import logo from "@/public/logo.png";
 
 import { useAuth as UseAuth } from "@/hooks/useAuth";
+import { signOut } from "@/utils/auth";
+
 import {
   Sheet,
   SheetContent,
@@ -13,7 +15,15 @@ import {
 } from "@/components/ui/sheet";
 import DashboardLinks from "./_components/DashboardLinks";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, User } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -64,7 +74,38 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
             </Sheet>
 
             <div className="ml-auto flex items-center justify-end md:pb-1">
-              Userbutton
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    size={"icon"}
+                    className="rounded-full"
+                  >
+                    <User className="size-6" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-40">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard">Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard/invoices">Invoices</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <form
+                      action={async () => {
+                        "use server";
+                        await signOut();
+                      }}
+                    >
+                      <button>Logout</button>
+                    </form>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
           <div className="">{children}</div>
