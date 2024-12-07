@@ -50,7 +50,7 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
             </div>
           </div>
         </div>
-        <div className="w-full">
+        <header className="w-full">
           <div className="flex items-center justify-between border-b border-opacity-10 px-5 py-4 md:py-5">
             <Sheet>
               <SheetTrigger asChild>
@@ -108,8 +108,8 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
               </DropdownMenu>
             </div>
           </div>
-          <div className="">{children}</div>
-        </div>
+          <main className="px-5 py-5">{children}</main>
+        </header>
       </div>
     </>
   );
