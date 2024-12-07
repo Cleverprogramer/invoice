@@ -3,9 +3,14 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/logo.png";
+import { redirect } from "next/navigation";
 
 import { useAuth as UseAuth } from "@/hooks/useAuth";
 import { signOut } from "@/utils/auth";
+
+import { db } from "@/db/db";
+import { users } from "@/db/schema/auth";
+import { eq } from "drizzle-orm";
 
 import {
   Sheet,
@@ -25,12 +30,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+async function getUser(userId: string) {
+  const data = await db.select().from(users).where(eq(users.id, userId));
+  const user = data[0];
+  if (!user.name || !user.fullname || !user.lastname || !user.address) {
+    redirect("/onboarding");
+  }
+  return user;
+}
+
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
 const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
   const session = await UseAuth();
+  const user = await getUser(session?.user?.id as string);
 
   return (
     <>
