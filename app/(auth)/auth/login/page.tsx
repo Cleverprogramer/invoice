@@ -23,7 +23,7 @@ const LoginPage = async () => {
   }
   return (
     <>
-      <div className="flex items-center justify-center h-screen ">
+      <div className="flex h-screen items-center justify-center">
         <Card className="max-w-sm">
           <CardHeader>
             <CardTitle className="text-2xl">Login</CardTitle>
@@ -37,17 +37,19 @@ const LoginPage = async () => {
                 "use server";
                 await signIn("nodemailer", formData);
               }}
-              className="flex flex-col space-y-4">
+              className="flex flex-col space-y-4"
+            >
               <div className="flex flex-col gap-y-2">
-                <Label>Email</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
+                  id="email"
                   name="email"
                   type="email"
                   required
                   placeholder="hello@hello.com"
                 />
               </div>
-              <SubmitButton />
+              <SubmitButton label="Login" />
             </form>
           </CardContent>
         </Card>
