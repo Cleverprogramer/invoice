@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useActionState } from "react";
+import React from "react";
 
 import {
   Card,
@@ -9,25 +7,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import SubmitButton from "../(auth)/auth/_components/SubmitButton";
-import { useForm } from "@conform-to/react";
+import OnBoardingForm from "../(dashboard)/dashboard/_components/OnBoardingForm";
 
-import { onBoarding } from "@/server/onBoarding";
-import { parseWithZod } from "@conform-to/zod";
-import { onBoardingSchema } from "@/lib/schema";
+import { useAuth } from "@/hooks/useAuth";
 
-const OnBoardingPage = () => {
-  const [lastResult, action] = useActionState(onBoarding, undefined);
-  const [form, fields] = useForm({
-    lastResult,
-    onValidate({ formData }) {
-      return parseWithZod(formData, { schema: onBoardingSchema });
-    },
-    shouldValidate: "onBlur",
-    shouldRevalidate: "onInput",
-  });
+import { users } from "@/db/schema/auth";
+import { db } from "@/db/db";
+import { eq } from "drizzle-orm";
+
+async function getUser(userId: string) {
+  const data = await db.select().from(users).where(eq(users.id, userId));
+  const user = data[0];
+
+  return user;
+}
+
+const OnBoardingPage = async () => {
+  const session = await useAuth();
+  const user = await getUser(session.user?.id as string);
   return (
     <div className="mx-auto flex min-h-screen w-screen items-center justify-center">
       <Card>
@@ -38,58 +35,11 @@ const OnBoardingPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form
-            action={action}
-            onSubmit={form.onSubmit}
-            id={form.id}
-            noValidate
-          >
-            <div className="mb-2 space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="flex flex-col gap-3">
-                  <Label htmlFor="firstname">First Name</Label>
-                  <Input
-                    key={fields.firstname.id}
-                    name={fields.firstname.name}
-                    defaultValue={fields.firstname.initialValue}
-                    id="firstname"
-                    placeholder="John"
-                    autoComplete="off"
-                  />
-                  <p className="text-sm text-red-500">
-                    {fields.firstname.errors}
-                  </p>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <Label htmlFor="lastname">Last Name</Label>
-                  <Input
-                    key={fields.lastname.key}
-                    name={fields.lastname.name}
-                    defaultValue={fields.lastname.initialValue}
-                    id="lastname"
-                    placeholder="Doe"
-                    autoComplete="off"
-                  />
-                  <p className="text-sm text-red-500">
-                    {fields.lastname.errors}
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="address">Address</Label>
-                <Input
-                  key={fields.address.key}
-                  name={fields.address.name}
-                  defaultValue={fields.address.initialValue}
-                  id="address"
-                  placeholder="Street"
-                  autoComplete="off"
-                />
-                <p className="text-sm text-red-500">{fields.address.errors}</p>
-              </div>
-            </div>
-            <SubmitButton label="Finish onboarding" />
-          </form>
+          <OnBoardingForm
+            address={user.address as string}
+            firstname={user.fullname as string}
+            lastname={user.lastname as string}
+          />
         </CardContent>
       </Card>
     </div>
