@@ -46,6 +46,7 @@ const LoginPage = async () => {
                   name="email"
                   type="email"
                   required
+                  autoComplete="off"
                   placeholder="hello@hello.com"
                 />
               </div>

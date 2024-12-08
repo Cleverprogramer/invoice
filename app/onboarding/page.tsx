@@ -54,6 +54,7 @@ const OnBoardingPage = () => {
                     defaultValue={fields.firstname.initialValue}
                     id="firstname"
                     placeholder="John"
+                    autoComplete="off"
                   />
                   <p className="text-sm text-red-500">
                     {fields.firstname.errors}
@@ -67,6 +68,7 @@ const OnBoardingPage = () => {
                     defaultValue={fields.lastname.initialValue}
                     id="lastname"
                     placeholder="Doe"
+                    autoComplete="off"
                   />
                   <p className="text-sm text-red-500">
                     {fields.lastname.errors}
@@ -81,6 +83,7 @@ const OnBoardingPage = () => {
                   defaultValue={fields.address.initialValue}
                   id="address"
                   placeholder="Street"
+                  autoComplete="off"
                 />
                 <p className="text-sm text-red-500">{fields.address.errors}</p>
               </div>
