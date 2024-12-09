@@ -2,7 +2,10 @@
 
 import React from "react";
 
-import { onBoardingSchema } from "@/lib/schema";
+import {
+  type onBoarding as onBoardingTypes,
+  onBoardingSchema,
+} from "@/lib/schema";
 import { onBoarding } from "@/server/onBoarding";
 import { parseWithZod } from "@conform-to/zod";
 
@@ -10,9 +13,8 @@ import { useForm } from "@conform-to/react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import SubmitButton from "@/app/(auth)/auth/_components/SubmitButton";
-import { z } from "zod";
 
-type OnBoardingFormProps = z.infer<typeof onBoardingSchema>;
+type OnBoardingFormProps = onBoardingTypes;
 
 const OnBoardingForm = ({
   address,
