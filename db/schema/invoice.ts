@@ -28,6 +28,7 @@ export const Invoices = pgTable("invoices", {
   fromEmail: text("fromEmail").notNull(),
   fromAddress: text("fromAddress").notNull(),
   rate: integer().notNull(),
+  quantity: integer().notNull(),
   amount: integer().notNull(),
   description: text("description").notNull(),
   note: text("note"),
