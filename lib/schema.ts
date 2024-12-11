@@ -15,24 +15,19 @@ export const InvoiceSchema = z.object({
   date: z.string().refine((date) => !isNaN(Date.parse(date)), {
     message: "Date must be a valid date",
   }),
-  dueDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: "Due date must be a valid date",
-  }),
+  dueDate: z.string(),
 
-  client: z.object({
-    name: z.string().min(1, "Client name is required"),
-    email: z.string().email("Invalid email format"),
-    address: z.string().min(1, "Client address is required"),
-  }),
+  clientName: z.string().min(1, "Client name is required"),
+  clientEmail: z.string().email("Invalid email format"),
+  clientAddress: z.string().min(1, "Client address is required"),
 
-  from: z.object({
-    name: z.string().min(1, "Sender name is required"),
-    email: z.string().email("Invalid sender email format"),
-    address: z.string().min(1, "Sender address is required"),
-  }),
+  fromName: z.string().min(1, "Sender name is required"),
+  fromEmail: z.string().email("Invalid sender email format"),
+  fromAddress: z.string().min(1, "Sender address is required"),
 
-  rate: z.number().min(0, "Rate must be a positive number"),
-  amount: z.number().min(0, "Amount must be a positive number"),
+  rate: z.number().min(1, "Rate must be a positive number"),
+  amount: z.number().min(1, "Amount must be a positive number"),
+  quantity: z.number().min(1, "Quantity must be a positive number"),
   description: z.string().min(1, "Description is required"),
   note: z.string().min(10, "Note must be at least 10 characters").optional(),
 
@@ -45,11 +40,13 @@ export const InvoiceSchema = z.object({
     }),
   }),
 
-  status: z.enum(["PENDING", "PAID"], {
-    errorMap: () => ({
-      message: "Status must be one of 'PENDING', 'PAID'",
-    }),
-  }),
+  status: z
+    .enum(["PENDING", "PAID"], {
+      errorMap: () => ({
+        message: "Status must be one of 'PENDING', 'PAID'",
+      }),
+    })
+    .default("PENDING"),
 });
 
 export type Invoice = z.infer<typeof InvoiceSchema>;
