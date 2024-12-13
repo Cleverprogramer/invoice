@@ -12,9 +12,7 @@ export const InvoiceSchema = z.object({
   invoiceName: z.string().min(1, "Invoice name is required"),
 
   invoiceNumber: z.string().min(1, "Invoice number is required"),
-  date: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: "Date must be a valid date",
-  }),
+  date: z.string(),
   dueDate: z.string(),
 
   clientName: z.string().min(1, "Client name is required"),
@@ -26,12 +24,9 @@ export const InvoiceSchema = z.object({
   fromAddress: z.string().min(1, "Sender address is required"),
 
   rate: z.number().min(1, "Rate must be a positive number"),
-  amount: z.number().min(1, "Amount must be a positive number"),
   quantity: z.number().min(1, "Quantity must be a positive number"),
   description: z.string().min(1, "Description is required"),
   note: z.string().min(10, "Note must be at least 10 characters").optional(),
-
-  subtotal: z.number().min(0, "Subtotal must be at least 0"),
   totalAmount: z.number().min(0, "Total amount must be at least 0"),
 
   currency: z.enum(["USD", "EUR"], {
