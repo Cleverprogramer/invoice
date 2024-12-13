@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import {
   CircleCheckBig,
   CloudDownload,
@@ -25,63 +26,95 @@ import {
   Trash,
 } from "lucide-react";
 
-const InvoicesTable = () => {
+import { db } from "@/db/db";
+import { Invoices } from "@/db/schema/invoice";
+import { eq } from "drizzle-orm";
+
+import { useAuth } from "@/hooks/useAuth";
+
+import { formatPrice } from "@/utils/formatPrice";
+import { formatDate } from "@/utils/formatDate";
+
+async function getInvoices(userId: string) {
+  const data = await db
+    .select()
+    .from(Invoices)
+    .where(eq(Invoices.userId, userId));
+  return data;
+}
+
+const InvoicesTable = async () => {
+  const session = await useAuth();
+  const invoices = await getInvoices(session.user?.id as string);
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Invoice Id</TableHead>
+          <TableHead className="hidden md:block">Invoice Id</TableHead>
           <TableHead>Customer</TableHead>
           <TableHead>Amount</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>Date</TableHead>
+          <TableHead className="hidden md:block">Date</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell>#1</TableCell>
-          <TableCell>Clever qazi</TableCell>
-          <TableCell>$55.00</TableCell>
-          <TableCell>Paid</TableCell>
-          <TableCell>08/12/2024</TableCell>
-          <TableCell className="text-right">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size={"icon"} variant={"secondary"}>
-                  <Ellipsis className="size-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="bottom" align="end">
-                <DropdownMenuItem asChild>
-                  <Link href="">
-                    <Pencil className="mr-2 size-4" /> Edit Invoice
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="">
-                    <CloudDownload className="mr-2 size-4" /> Download Invoice
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="">
-                    <CloudDownload className="mr-2 size-4" /> Reminder Email
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="">
-                    <Trash className="mr-2 size-4" /> Delete Invoice
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="">
-                    <CircleCheckBig className="mr-2 size-4" /> Mark as Paid
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </TableCell>
-        </TableRow>
+        {invoices.map((invoice) => (
+          <TableRow key={invoice.id}>
+            <TableCell className="hidden md:block">
+              #{invoice.invoiceNumber}
+            </TableCell>
+            <TableCell>{invoice.clientName}</TableCell>
+            <TableCell>
+              {formatPrice({
+                amount: invoice.totalAmount,
+                currency: (invoice.currency as "USD") || "EUR",
+              })}
+            </TableCell>
+            <TableCell>
+              <Badge>{invoice.status}</Badge>
+            </TableCell>
+            <TableCell className="hidden md:block">
+              {formatDate(invoice.createdAt as Date)}
+            </TableCell>
+            <TableCell className="text-right">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button size={"icon"} variant={"secondary"}>
+                    <Ellipsis className="size-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent side="bottom" align="end">
+                  <DropdownMenuItem asChild>
+                    <Link href="">
+                      <Pencil className="mr-2 size-4" /> Edit Invoice
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="">
+                      <CloudDownload className="mr-2 size-4" /> Download Invoice
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="">
+                      <CloudDownload className="mr-2 size-4" /> Reminder Email
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="">
+                      <Trash className="mr-2 size-4" /> Delete Invoice
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="">
+                      <CircleCheckBig className="mr-2 size-4" /> Mark as Paid
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );
