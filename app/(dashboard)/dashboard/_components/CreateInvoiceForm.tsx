@@ -31,7 +31,19 @@ import { InvoiceSchema } from "@/lib/schema";
 import { Invoice as newInvoice } from "@/server/Invoice";
 import { formatPrice } from "@/utils/formatPrice";
 
-const CreateInvoiceForm = () => {
+interface CreateInvoiceFormProps {
+  firstName: string;
+  lastName: string;
+  address: string;
+  email: string;
+}
+
+const CreateInvoiceForm = ({
+  address,
+  email,
+  firstName,
+  lastName,
+}: CreateInvoiceFormProps) => {
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     new Date(),
   );
@@ -41,6 +53,11 @@ const CreateInvoiceForm = () => {
   const calculateTotalAmount = quantity * rate;
   const [lastResult, action] = React.useActionState(newInvoice, undefined);
   const [form, fields] = useForm({
+    defaultValue: {
+      fromName: `${firstName} ${lastName}`,
+      fromEmail: email,
+      fromAddress: address,
+    },
     lastResult,
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: InvoiceSchema });
