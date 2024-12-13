@@ -1,7 +1,9 @@
 import React from "react";
 
+import CreateInvoiceForm from "../../_components/CreateInvoiceForm";
+
 const CreateInvoicePage = () => {
-  return <div>hey let's create a new invoice</div>;
+  return <CreateInvoiceForm />;
 };
 
 export default CreateInvoicePage;
