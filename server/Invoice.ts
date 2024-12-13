@@ -71,7 +71,7 @@ export const Invoice = async (prevState: unknown, formData: FormData) => {
         amount: createdInvoice[0].totalAmount,
         currency: createdInvoice[0].currency as "USD" | "EUR",
       }),
-      invoiceLink: "Test_InvoiceLink",
+      invoiceLink: `${process.env.NODE_ENV === "development" ? `http://localhost:3000/api/invoice/${createdInvoice[0].id}` : `${process.env.NEXT_PULIC_URL}/api/invoice/${createdInvoice[0].id}`}`,
     },
   });
 
