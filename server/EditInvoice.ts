@@ -64,7 +64,7 @@ export const EditInvoice = async (prevState: unknown, formData: FormData) => {
   emailClient.send({
     from: sender,
     to: [{ email: data[0].clientEmail }],
-    template_uuid: "79e6e5f9-967a-4452-986c-e9bb2caff3d9",
+    template_uuid: "7e138aed-5071-4a7e-a07c-3227236fac68",
     template_variables: {
       ClientName: data[0].clientName,
       invoiceNumber: data[0].invoiceNumber,
