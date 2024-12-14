@@ -29,6 +29,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Toaster } from "@/components/ui/sonner";
 
 async function getUser(userId: string) {
   const data = await db.select().from(users).where(eq(users.id, userId));
@@ -125,6 +126,7 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
           </div>
           <main className="px-5 py-5">{children}</main>
         </header>
+        <Toaster richColors closeButton theme="light" />
       </div>
     </>
   );
