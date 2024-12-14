@@ -1,14 +1,5 @@
 import React from "react";
 
-import Link from "next/link";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -18,13 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import {
-  CircleCheckBig,
-  CloudDownload,
-  Ellipsis,
-  Pencil,
-  Trash,
-} from "lucide-react";
+import InvoiceAction from "./InvoiceAction";
 
 import { db } from "@/db/db";
 import { Invoices } from "@/db/schema/invoice";
@@ -78,40 +63,10 @@ const InvoicesTable = async () => {
               {formatDate(invoice.createdAt as Date)}
             </TableCell>
             <TableCell className="text-right">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button size={"icon"} variant={"secondary"}>
-                    <Ellipsis className="size-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="bottom" align="end">
-                  <DropdownMenuItem asChild>
-                    <Link href="">
-                      <Pencil className="mr-2 size-4" /> Edit Invoice
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="">
-                      <CloudDownload className="mr-2 size-4" /> Download Invoice
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="">
-                      <CloudDownload className="mr-2 size-4" /> Reminder Email
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="">
-                      <Trash className="mr-2 size-4" /> Delete Invoice
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="">
-                      <CircleCheckBig className="mr-2 size-4" /> Mark as Paid
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <InvoiceAction
+                id={invoice.id}
+                status={invoice.status as string}
+              />
             </TableCell>
           </TableRow>
         ))}
