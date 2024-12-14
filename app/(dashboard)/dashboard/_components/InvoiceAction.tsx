@@ -15,9 +15,11 @@ import {
   CheckCircle,
   CloudDownload,
   Ellipsis,
+  Mail,
   Pencil,
   Trash,
 } from "lucide-react";
+import { toast } from "sonner";
 
 type InvoiceActionProps = {
   id: string;
@@ -25,6 +27,21 @@ type InvoiceActionProps = {
 };
 
 const InvoiceAction = ({ id, status }: InvoiceActionProps) => {
+  const handleSendReminder = () => {
+    toast.promise(
+      fetch(`/api/email/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      {
+        loading: "Sending reminder email...",
+        success: "Reminder email sent successfully",
+        error: "Failed to send reminder email",
+      },
+    );
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -43,10 +60,8 @@ const InvoiceAction = ({ id, status }: InvoiceActionProps) => {
             <CloudDownload className="mr-2 size-4" /> Download Invoice
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="">
-            <CloudDownload className="mr-2 size-4" /> Reminder Email
-          </Link>
+        <DropdownMenuItem onClick={handleSendReminder}>
+          <Mail className="mr-2 size-4" /> Reminder Email
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href={`/dashboard/invoices/${id}/delete`}>
