@@ -66,7 +66,7 @@ const CreateInvoiceForm = ({
     shouldRevalidate: "onInput",
   });
   return (
-    <Card>
+    <Card className="mx-auto w-full max-w-4xl">
       <CardContent className="p-5">
         <form id={form.id} onSubmit={form.onSubmit} action={action} noValidate>
           <section className="space-y-6">
