@@ -2,9 +2,15 @@ import React from "react";
 
 import { useAuth as UseAuth } from "@/hooks/useAuth";
 
+import DashboardBlocks from "./_components/DashboardBlocks";
+
 const DashboardPage = async () => {
   const session = await UseAuth();
-  return <div>Hello from the Dashboard</div>;
+  return (
+    <>
+      <DashboardBlocks />
+    </>
+  );
 };
 
 export default DashboardPage;
