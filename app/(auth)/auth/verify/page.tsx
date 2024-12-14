@@ -10,14 +10,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ArrowLeft, CircleAlert, Mail } from "lucide-react";
+import BgGradient from "@/app/(dashboard)/dashboard/_components/BgGradient";
 
 const VerifyEmailPage = () => {
   return (
-    <div className="flex items-center justify-center w-full min-h-screen">
-      <Card className=" w-[380px] px-5">
+    <div className="flex min-h-screen w-full items-center justify-center">
+      <BgGradient />
+      <Card className="w-[380px] px-5">
         <CardHeader className="mb-3 text-center">
-          <div className="mb-5 bg-blue-200 w-fit p-5 rounded-full flex items-center justify-center mx-auto">
-            <Mail className="text-blue-500 size-10" />
+          <div className="mx-auto mb-5 flex w-fit items-center justify-center rounded-full bg-blue-200 p-5">
+            <Mail className="size-10 text-blue-500" />
           </div>
           <CardTitle className="text-2xl font-semibold">
             Check your email
@@ -27,10 +29,10 @@ const VerifyEmailPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="bg-yellow-50 border-yellow-300 p-4 rounded-md gap-3">
+          <div className="gap-3 rounded-md border-yellow-300 bg-yellow-50 p-4">
             <div className="flex items-center gap-3">
               <CircleAlert className="text-yellow-400" />
-              <p className="text-yellow-700 text-sm font-medium">
+              <p className="text-sm font-medium text-yellow-700">
                 Be sure to check your spam folder!
               </p>
             </div>
@@ -42,7 +44,8 @@ const VerifyEmailPage = () => {
             className={buttonVariants({
               className: "w-full",
               variant: "outline",
-            })}>
+            })}
+          >
             <ArrowLeft /> Back to Homepage
           </Link>
         </CardFooter>

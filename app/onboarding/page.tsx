@@ -14,6 +14,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { users } from "@/db/schema/auth";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
+import BgGradient from "../(dashboard)/dashboard/_components/BgGradient";
 
 async function getUser(userId: string) {
   const data = await db.select().from(users).where(eq(users.id, userId));
@@ -27,6 +28,7 @@ const OnBoardingPage = async () => {
   const user = await getUser(session.user?.id as string);
   return (
     <div className="mx-auto flex min-h-screen w-screen items-center justify-center">
+      <BgGradient />
       <Card>
         <CardHeader>
           <CardTitle className="text-xl">You are almost finished!</CardTitle>

@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SubmitButton from "../_components/SubmitButton";
+import BgGradient from "@/app/(dashboard)/dashboard/_components/BgGradient";
 
 const LoginPage = async () => {
   const session = await auth();
@@ -23,6 +24,7 @@ const LoginPage = async () => {
   }
   return (
     <>
+      <BgGradient />
       <div className="flex h-screen items-center justify-center">
         <Card className="max-w-sm">
           <CardHeader>
