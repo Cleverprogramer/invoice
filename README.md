@@ -45,8 +45,14 @@ The Invoice Web App is a modern, user-friendly platform designed to simplify inv
    Create a `.env` file in the root directory and add the following:
    ```env
    DATABASE_URL=your_neo_database_url
-   EMAIL_USER=your_email@example.com
-   EMAIL_PASS=your_email_password
+   EMAIL_SERVER_USER=your_email_server_user
+   EMAIL_SERVER_PASSWORD=your_email_server_password
+   EMAIL_SERVER_HOST=your_email_server_host
+   EMAIL_SERVER_PORT=your_email_server_port
+   EMAIL_FROM=your_email_from
+   NEXTAUTH_SECRET=your_nextauth_secret
+   NEXTAUTH_URL=http://localhost:3000
+   MAILTRAP_TOKEN=your_mailtrap_token
    ```
 4. Start the development server:
    ```bash
